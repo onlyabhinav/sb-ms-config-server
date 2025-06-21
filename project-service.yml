@@ -1,0 +1,56 @@
+# File: your-config-repo/project-service.yml
+# This file contains configuration for the 'project-service'
+
+server:
+  port: 8081 # Port for the project-service
+
+spring:
+  datasource:
+    url: jdbc:h2:mem:projectdb # In-memory H2 database
+    driverClassName: org.h2.Driver
+    username: sa
+    password: ''
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: update # Automatically update the schema
+    show-sql: true
+
+# Resilience4j Configuration
+resilience4j:
+  circuitbreaker:
+    instances:
+      externalService:
+        register-health-indicator: true
+        sliding-window-size: 10
+        minimum-number-of-calls: 5
+        permitted-number-of-calls-in-half-open-state: 3
+        automatic-transition-from-open-to-half-open-enabled: true
+        wait-duration-in-open-state: 5s
+        failure-rate-threshold: 50
+        event-consumer-buffer-size-in-half-open-state: 10
+  retry:
+    instances:
+      externalService:
+        max-attempts: 3
+        wait-duration: 1s
+
+# FF4J Configuration
+ff4j:
+  # Enable the FF4J Web Console
+  web-console:
+    enable: true
+    path: /ff4j-console
+  # Define features
+  features:
+    - uid: newProjectCreationApi
+      enable: true
+      description: "Enable the new V2 API for project creation"
+    - uid: detailedProjectView
+      enable: false
+      description: "Show detailed view on the project page"
+
+# Custom Application Properties
+app:
+  jwt:
+    secret: "======================YourSuperSecretKeyForJWT======================" # Use a long, random string
