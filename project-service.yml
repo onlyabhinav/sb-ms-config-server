@@ -15,6 +15,12 @@ spring:
     hibernate:
       ddl-auto: update # Automatically update the schema
     show-sql: true
+  security:
+    user:
+      name:admin
+      password: admin
+      
+spring.security.user.password=password
 
 # Resilience4j Configuration
 resilience4j:
