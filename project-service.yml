@@ -19,8 +19,6 @@ spring:
     user:
       name: admin
       password: admin
-      
-spring.security.user.password=password
 
 # Resilience4j Configuration
 resilience4j:
